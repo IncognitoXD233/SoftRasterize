@@ -53,7 +53,7 @@ Color Framebuffer::GetPixel(Position _position) const
 
 void Framebuffer::DrawLine(Position _start, Position _end, const Color& _color)
 {
-    if(_start.x == _end.x)
+    if(_start.x == _end.x) // Vertical Line
     {
         int startY = std::min(_start.y, _end.y);
         int endY = std::max(_start.y, _end.y);
@@ -63,7 +63,7 @@ void Framebuffer::DrawLine(Position _start, Position _end, const Color& _color)
         }
     }
 
-    if(_start.y == _end.y)
+    if(_start.y == _end.y) // Horizontal Line
     {
         int startX = std::min(_start.x, _end.x);
         int endX = std::max(_start.x, _end.x);
@@ -74,7 +74,7 @@ void Framebuffer::DrawLine(Position _start, Position _end, const Color& _color)
     }
 
     if(_start.x != _end.x && 
-       _start.y != _end.y)
+       _start.y != _end.y) // Diagonal Line
     {
         int x = _start.x;
         int y = _start.y;
@@ -89,7 +89,7 @@ void Framebuffer::DrawLine(Position _start, Position _end, const Color& _color)
 
         for(int i = 0; i <= dx; i++)
         {
-            SetPixel(Position{_start.x, _start.y}, _color);
+            SetPixel(Position{x, y}, _color);
             if(err >= 0)
             {
                 y += sy;

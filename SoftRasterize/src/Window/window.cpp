@@ -46,7 +46,9 @@ void Window::Updata()
     // framebuffer.SetPixel(Position{100, 100}, Color{255, 0, 0, 255});
     // framebuffer.SetPixel(Position{200, 100}, Color{255, 0, 0, 255});
     // framebuffer.SetPixel(Position{150, 200}, Color{255, 0, 0, 255});
-    framebuffer.DrawLine(Position{100, 100}, Position{200, 100}, Color{255, 0, 0, 255});
+    framebuffer.DrawLine(Position{150, 150}, Position{50, 150}, Color{0, 0, 255, 255});
+    framebuffer.DrawLine(Position{100, 100}, Position{150, 150}, Color{255, 0, 0, 255});
+    framebuffer.DrawLine(Position{100, 100}, Position{50, 150}, Color{0, 255, 0, 255});
 }
 
 void Window::Render()

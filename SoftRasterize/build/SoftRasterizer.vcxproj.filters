@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="D:\VS Code environment\C++\github\SoftRasterize\SoftRasterize\src\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS Code environment\C++\github\SoftRasterize\SoftRasterize\src\Framebuffer\framebuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS Code environment\C++\github\SoftRasterize\SoftRasterize\src\Renderer\renderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS Code environment\C++\github\SoftRasterize\SoftRasterize\src\Window\window.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\VS Code environment\C++\github\SoftRasterize\SoftRasterize\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{58138C46-0224-3EF8-9A63-CC3F44A449DC}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,10 @@
+^D:\VS CODE ENVIRONMENT\C++\GITHUB\SOFTRASTERIZE\SOFTRASTERIZE\BUILD\CMAKEFILES\B0663BB6503645276E32FC2EC74F2A61\GENERATE.STAMP.RULE
+setlocal
+"D:\Program Files (x86)\CMake\bin\cmake.exe" "-SD:/VS Code environment/C++/github/SoftRasterize/SoftRasterize" "-BD:/VS Code environment/C++/github/SoftRasterize/SoftRasterize/build" --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file "D:/VS Code environment/C++/github/SoftRasterize/SoftRasterize/build/SoftRasterizer.sln"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

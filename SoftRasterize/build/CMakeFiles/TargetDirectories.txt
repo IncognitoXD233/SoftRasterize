@@ -1,0 +1,3 @@
+D:/VS Code environment/C++/github/SoftRasterize/SoftRasterize/build/CMakeFiles/SoftRasterizer.dir
+D:/VS Code environment/C++/github/SoftRasterize/SoftRasterize/build/CMakeFiles/edit_cache.dir
+D:/VS Code environment/C++/github/SoftRasterize/SoftRasterize/build/CMakeFiles/rebuild_cache.dir
