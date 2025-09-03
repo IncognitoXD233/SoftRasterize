@@ -3,7 +3,6 @@
 #include <memory>
 
 #include "..\Color\color.hpp"
-#include "..\Position\position.hpp"
 
 class Framebuffer
 {
@@ -19,8 +18,8 @@ public:
     void DrawLine(Position _start, Position _end, const Color& _color);
 
     const sf::Uint8* GetData() const { return pixelData.get(); }
-    int Width() const { return width; }
-    int Height() const { return height; }
+    int GetWidth() const { return width; }
+    int GetHeight() const { return height; }
     int SizeInBytes() const { return width * height * 4; }
 
     Framebuffer(const Framebuffer&) = delete;

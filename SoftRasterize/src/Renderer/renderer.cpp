@@ -4,7 +4,7 @@ Renderer::Renderer() {}
 
 bool Renderer::CreateTexture(const Framebuffer& _framebuffer)
 {
-    return texture.create(_framebuffer.Width(), _framebuffer.Height());
+    return texture.create(_framebuffer.GetWidth(), _framebuffer.GetHeight());
 }
 
 void Renderer::CreateSprite()
