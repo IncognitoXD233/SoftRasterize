@@ -1,6 +1,7 @@
 #pragma once
 
 #include <immintrin.h>
+#include <iostream>
 
 #include "./vec4.hpp"
 
@@ -14,8 +15,8 @@ struct Mat4
     };
     Mat4() { }
     Mat4 Transpose() const;
-    Mat4 Inverse() const;// no
-    Mat4 FastInverse() const;// no
+    Mat4 Inverse() const;
+    Mat4 FastInverse() const;
     float Determinant() const;
 
     static Mat4 LookAt(const Vec3& _eye, const Vec3& _target, const Vec3& _up);// no

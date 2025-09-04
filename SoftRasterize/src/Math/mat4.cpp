@@ -15,12 +15,7 @@ Mat4::Mat4()
 
 Mat4 Mat4::Identity()
 {
-    Mat4 result;
-    result.row[0] = _mm_setr_ps(1.0f, 0.0f, 0.0f, 0.0f);
-    result.row[1] = _mm_setr_ps(0.0f, 1.0f, 0.0f, 0.0f);
-    result.row[2] = _mm_setr_ps(0.0f, 0.0f, 1.0f, 0.0f);
-    result.row[3] = _mm_setr_ps(0.0f, 0.0f, 0.0f, 1.0f);
-    return result;
+    return Mat4();
 }
 
 Mat4 Mat4::Transpose() const
@@ -38,6 +33,105 @@ Mat4 Mat4::Transpose() const
     return result;
 }
 
+Mat4 Mat4::Inverse() const
+{
+    float augmentedMat[4][8];
+    for(int row = 0; row < 4; row++)
+    {
+        for(int col = 0; col < 4; col++)
+        {
+            augmentedMat[row][col] = mat[row][col];
+            augmentedMat[row][col + 4] = mat[row][col];
+        }
+    }
+
+    for(int col = 0; col < 4; col++)
+    {
+        int pivotRow = col;
+        float maxVal = std::fabs(augmentedMat[col][col]);
+        for(int row = col + 1; row < 4; row++)
+        {
+            if(std::fabs(augmentedMat[row][col]) > maxVal)
+            {
+                maxVal = std::fabs(augmentedMat[row][col]);
+                pivotRow = row;
+            }
+        }
+
+        if(std::fabs(augmentedMat[pivotRow][col]) < 1e-8f)
+        {
+            throw std::runtime_error("Mat4::Inverse(): Matrix is singular.");
+        }
+
+        if(pivotRow != col)
+        {
+            for(int i = 0; i < 4; i++)
+            {
+                std::swap(augmentedMat[col][i], augmentedMat[pivotRow][i]);
+            }
+        }
+
+        float pivotInv = 1.0f / augmentedMat[col][col];
+        for(int i = 0; i < 8; i++)
+        {
+            augmentedMat[col][i] *= pivotInv;
+        }
+
+        for(int row = 0; row < 4; row++)
+        {
+            if(row == col) { continue; }
+
+            float factor = augmentedMat[row][col];
+            for(int i = 0; i < 8; i++)
+            {
+                augmentedMat[row][i] -= factor * augmentedMat[col][i];
+            }
+        }
+    }
+
+    Mat4 result;
+    for(int row = 0; row < 4; row++)
+    {
+        for(int col = 0; col < 4; col++)
+        {
+            result.mat[row][col] = augmentedMat[row][col + 4];
+        }
+    }
+    return result;
+}
+
+Mat4 Mat4::FastInverse() const
+{
+    Mat4 result;
+
+    __m128 row0 = _mm_load_ps(mat[0]);
+    __m128 row1 = _mm_load_ps(mat[1]);
+    __m128 row2 = _mm_load_ps(mat[2]);
+
+    __m128 translation = _mm_setr_ps(mat[0][3], mat[1][3], mat[2][3], 0.0f);
+
+    __m128 tmp0 = _mm_shuffle_ps(row0, row1, _MM_SHUFFLE(1, 0, 1, 0));
+    __m128 tmp1 = _mm_shuffle_ps(row0, row1, _MM_SHUFFLE(2, 2, 2, 2));
+    __m128 tmp2 = _mm_shuffle_ps(row2, row2, _MM_SHUFFLE(0, 1, 0, 1));
+
+    __m128 invRow0 = _mm_shuffle_ps(tmp0, row2, _MM_SHUFFLE(3, 0, 2, 0));
+    __m128 invRow1 = _mm_shuffle_ps(tmp1, row2, _MM_SHUFFLE(3, 1, 3, 1));
+    __m128 invRow2 = _mm_shuffle_ps(tmp2, row0, _MM_SHUFFLE(3, 2, 2, 0));
+
+    __m128 invTransX = _mm_dp_ps(invRow0, translation, 0xF1);
+    __m128 invTransY = _mm_dp_ps(invRow1, translation, 0xF2);
+    __m128 invTransZ = _mm_dp_ps(invRow2, translation, 0xF4);
+
+    __m128 invTranslation = _mm_sub_ps(_mm_setzero_ps(), _mm_add_ps(_mm_add_ps(invTransX, invTransY), invTransZ));
+
+    _mm_store_ps(result.mat[0], _mm_blend_ps(invRow0, invTranslation, 0x8));
+    _mm_store_ps(result.mat[1], _mm_blend_ps(invRow1, invTranslation, 0x8));
+    _mm_store_ps(result.mat[2], _mm_blend_ps(invRow2, invTranslation, 0x8));
+    _mm_store_ps(result.mat[3], _mm_setr_ps(0.0f, 0.0f, 0.0f, 1.0f));
+
+    return result;
+}
+
 float Mat4::Determinant() const
 {
     auto determinant3x3 = [=](float a, float b, float c,
@@ -46,6 +140,7 @@ float Mat4::Determinant() const
     {
         return a * (e * i - f * h) - b * (d * i - f * g) + c * (d * h - e * g);
     };
+
     return mat[0][0] * determinant3x3(mat[1][1], mat[1][2], mat[1][3],
                                       mat[2][1], mat[2][2], mat[2][3],
                                       mat[3][1], mat[3][2], mat[3][3])
@@ -74,7 +169,7 @@ Mat4 Mat4::Translate(float _translateX, float _translateY, float _translateZ)
 {
     Mat4 result = Identity();
     __m128 translateVec = _mm_setr_ps(_translateX, _translateY, _translateZ, 1.0f);
-    _mm_store_ps(result.mat[0] + 3, translateVec);
+    _mm_store_ps(&result.mat[0][3], translateVec);
     return result;
 }
 

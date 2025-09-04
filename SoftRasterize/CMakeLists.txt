@@ -13,6 +13,9 @@ add_executable(SoftRasterizer
     src/Framebuffer/framebuffer.cpp
     src/Renderer/renderer.cpp
     src/Window/window.cpp
+    src/Math/mat4.cpp
+    src/Math/vec4.cpp
+    src/Math/vec3.cpp
 )
 
 set_target_properties(SoftRasterizer PROPERTIES
